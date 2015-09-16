@@ -1,6 +1,11 @@
 # SRL_RHCF_PLANNER 
 ###### Randomized Homotopy Classes Finder for Social Navigation developed within the context of the EU FP7 project [SPENCER](http://www.spencer.eu).
 
+
+![alt tag](http://www2.informatik.uni-freiburg.de/~palmieri/images/cover_girl.png)
+
+**Description of the figure**: The **red** Voronoi diagram, which implicitly encodes homotopy classes, describes the possible ways to go through a crowd in a room. Our approach rapidly selected two possible paths (in **yellow** and **green**).
+
 ### Motivation 
 Having a set of diverse paths may have potential benefits in a variety of applications. In highly dynamic environments, a set of precomputed paths, that may be checked for validity in presence of unexpected obstacles, might be an alternative approach to solving from scratch the motion planning problem or to replan for each 
 environment's change. Another possibility is to use a set of paths in shared autonomy applications 
@@ -8,9 +13,6 @@ with human-in-the-loop, where the user could switch between different diverse tr
 
 To deal with unexpected obstacles and quickly react to dynamic world's changes in social settings we utilize a fast random walk approach (RHCF) to generate a set of K distinct paths, belonging to different homotopy classes. The best path among those found by RHCF is then used to generate a kinodynamic trajectory.
 
-![alt tag](http://www2.informatik.uni-freiburg.de/~palmieri/images/cover_girl.png)
-
-**Description of the figure**: The **red** Voronoi diagram, which implicitly encodes homotopy classes, describes the possible ways to go through a crowd in a room. Our approach rapidly selected two possible paths (in **yellow** and **green**).
 
 ### Description of the Package
 SRL_RHCF_PLANNER is a ROS move_base package that implements a fast hierarchical motion
