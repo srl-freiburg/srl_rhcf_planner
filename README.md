@@ -26,6 +26,8 @@ In this global planner, firstly a set of homotopy classes is generated using RHC
 class among those found by RHCF.
 
 
+![alt tag](https://docs.google.com/drawings/d/1pJRteOwdmayL_jTUQHmQ1CtwFKKFfWJJI9OUvlbb_wc/pub?w=480&h=360)
+
 ### Requirements
 * ROS (including visualization rools -> rviz), tested on Indigo and Hydro
 * ros-hydro-navigation or ros-indigo-navigation
