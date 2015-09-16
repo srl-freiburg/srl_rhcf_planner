@@ -160,14 +160,14 @@ void DynamicVoronoi::initializeHumanInfo(int _sizeX, int _sizeY, std::vector<hum
     h_agents_data[h.x][h.y].vy = h.vy ;
   }
 
-  
+
 
   dist_closest_humans_ = new float*[_sizeX];
   for (int x=0; x<_sizeX; x++) dist_closest_humans_[x] = new float[_sizeY];
 
   for(int x=0; x<_sizeX; x++){
     for(int y=0; y<_sizeY; y++){
-        
+
         dist_closest_humans_[x][y] = INFINITY ;
 
 
@@ -177,12 +177,12 @@ void DynamicVoronoi::initializeHumanInfo(int _sizeX, int _sizeY, std::vector<hum
              float dist = (h.x-x)*(h.x-x) + (h.y-y)*(h.y-y);
 
              if(dist < dist_closest_humans_[x][y]){
-              
+
                 dist_closest_humans_[x][y] = dist;
 
              }
-      
-      
+
+
         }
     }
   }
@@ -432,145 +432,9 @@ int DynamicVoronoi::computeDistance(int xa, int ya, int xb, int yb){
 
   }
 
-
-  // additive weighting of Euclidean distance on the grid, it generates connected regions..
-  if(type_weight_ == 1){
-
-    newSqDistance = ( - weightDist) + (distx*distx + disty*disty);
-
-  }
-
-
-  // multipl weighting of Euclidean distance on the grid, it generates not connected regions
-  if(type_weight_ == 2){
-
-    newSqDistance = ( distx*distx + disty*disty ) / (( valueA + 1)) ;
-
-  }
-
-
-  // Only Considering heading angle of the agents
-  if(type_weight_ == 3){
-    // rotating of 90 degrees
-    double x =  + h_agents_data[xb][yb].vy;
-    double y = -h_agents_data[xb][yb].vx ;
-
-    // newSqDistance =   + (distx*distx + disty*disty) + (fabs( direction_gain_*h_agents_data[xb][yb].vx * distx + direction_gain_*h_agents_data[xb][yb].vy * disty ));
-    newSqDistance =   (int) round( (distx*distx + disty*disty) + (fabs( + direction_gain_*x * distx + direction_gain_*y * disty )) );
-
-  }
-
-  // Considering Anisotropic social cost
-  // Additive social model
-  if(type_weight_ == 4){
-    // Consider now a cost related to the social field
-    if(sqrtDist == 0 )
-    {
-
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    // handling cases where we are out of the grid
-    if ( (xb == 0) || (yb == 0) || (xb == (sizeX-1) ) || (yb == (sizeY-1) )) {
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    double distxn = distx/sqrtDist;
-    double distyn = disty/sqrtDist;
-
-    if(distxn>=0 && distyn>=0)
-        socialCost = ( distxn*distxn* (weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-    else  if(distxn>=0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn>=0)
-          socialCost = ( distxn*distxn* (weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-
-    newSqDistance = ( sqrt(distx*distx + disty*disty) + socialCost*( social_gain_/255.0) * sqrt(distx*distx + disty*disty) )*( sqrt(distx*distx + disty*disty) + socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty) );
-
-  }
-
-
-
-  // Considering Anisotropic social cost plus term related to direction of the agents
-  // Power diagram social model + anisotropic weighting
-  if(type_weight_ == 5){
-    // Consider now a cost related to the social field
-    if(sqrtDist == 0 )
-    {
-
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    // handling cases where we are out of the grid
-    if ( (xb == 0) || (yb == 0) || (xb == (sizeX-1) ) || (yb == (sizeY-1) )) {
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    double distxn = distx/sqrtDist;
-    double distyn = disty/sqrtDist;
-
-    if(distxn>=0 && distyn>=0)
-        socialCost = ( distxn*distxn* (weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-    else  if(distxn>=0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn>=0)
-          socialCost = ( distxn*distxn* (weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-
-
-    double x =  + h_agents_data[xb][yb].vy;
-    double y =  - h_agents_data[xb][yb].vx ;
-
-    newSqDistance =  (distx*distx + disty*disty) +
-                    (fabs( direction_gain_*x * distx + direction_gain_*y * disty )) + 
-                    socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty);
-
-  }
-
-
-  // Considering Anisotropic social cost, power diagram
-  // Power diagram social model
-  if(type_weight_ == 6){
-    // Consider now a cost related to the social field
-    if(sqrtDist == 0 )
-    {
-
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    // handling cases where we are out of the grid
-    if ( (xb == 0) || (yb == 0) || (xb == (sizeX-1) ) || (yb == (sizeY-1) )) {
-      return (distx*distx + disty*disty) ;
-
-    }
-
-    double distxn = distx/sqrtDist;
-    double distyn = disty/sqrtDist;
-
-    if(distxn>=0 && distyn>=0)
-        socialCost = ( distxn*distxn* (weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-    else  if(distxn>=0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb+1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn<0)
-          socialCost = ( distxn*distxn*(weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb-1]));
-    else  if(distxn<0 && distyn>=0)
-          socialCost = ( distxn*distxn* (weighting_map_[xb-1][yb]) + distyn*distyn*(weighting_map_[xb][yb+1]));
-
-    newSqDistance = ( (distx*distx + disty*disty) + socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty) );
-
-  }
-
   // Considering Anisotropic social cost
   // Additive social model + anisotropic weights
-  if(type_weight_ == 7){
+  if(type_weight_ == 1){
     // Consider now a cost related to the social field
     if(sqrtDist == 0 )
     {
@@ -578,7 +442,7 @@ int DynamicVoronoi::computeDistance(int xa, int ya, int xb, int yb){
     }
 
     int nagents = (int)humans_data.size();
-    
+
     if(nagents == 0){
 
         return sqrtDist;
@@ -592,11 +456,11 @@ int DynamicVoronoi::computeDistance(int xa, int ya, int xb, int yb){
 
     // handling cases where we are out of the grid
     // if ( (xb == 0) || (yb == 0) || (xb == (sizeX-1) ) || (yb == (sizeY-1) )) {
-      
+
     if ( x == 0 && y == 0) {
 
       return (int)round(border_gain_*(distx*distx + disty*disty)) ;
-    
+
     }
 
 
@@ -614,7 +478,7 @@ int DynamicVoronoi::computeDistance(int xa, int ya, int xb, int yb){
 
 
     newSqDistance = (int) round( ( sqrt(distx*distx + disty*disty) + socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty) )*
-                    ( sqrt(distx*distx + disty*disty) + socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty) ) + 
+                    ( sqrt(distx*distx + disty*disty) + socialCost*(social_gain_/255.0) * sqrt(distx*distx + disty*disty) ) +
                     (fabs( direction_gain_*x * distx + direction_gain_*y * disty )) );
 
 
@@ -991,16 +855,16 @@ if(alternativeDiagram==NULL){
 
   // //delete worms
   while (!end_cells.empty()) {
-    
+
     INTPOINT p = end_cells.front();
-    
+
     end_cells.pop();
-    
+
     float distToObst = getGridDistance( p.x, p.y );
 
     /// Please (distToObst <= 3) && ( getHumanDistance(p.x,p.y) > 10) used to cut worms which are close to obstacles
     /// but far from human beings. Note these values were generated after an informal validation
-    if ((isVoronoiAlternative(p.x,p.y) && getNumVoronoiNeighborsAlternative(p.x, p.y) == 1) || (distToObst <= 1.5) || (distToObst <= 3) && ( getHumanDistance(p.x,p.y) > 10) || 
+    if ((isVoronoiAlternative(p.x,p.y) && getNumVoronoiNeighborsAlternative(p.x, p.y) == 1) || (distToObst <= 1.5) || (distToObst <= 3) && ( getHumanDistance(p.x,p.y) > 10) ||
         (p.x == 0 || p.x == 1 || p.y == 0 || p.y == 1 || p.x == sizeX-1 || p.x == sizeX-2 || p.y == sizeY-1 || p.y == sizeY-2)) {
       alternativeDiagram[p.x][p.y] = voronoiPrune;
 

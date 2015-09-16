@@ -266,6 +266,13 @@
       			Choose a value between 1 and 2 -->
       	<param name="weighting_gain" value="10" type="double"/>
 
+        <param name="discounting_factor" value="0.8" type="double"/>
+
+        <param name="social_gain" value="2" type="double"/>
+
+        <param name="border_gain" value="7" type="double"/>
+
+
       	<param name="K_homotopy_classes" value="3" type="int"/>
 
       	<param name="file_to_load" value="scenarios/people_wall.txt" type="string"/>
