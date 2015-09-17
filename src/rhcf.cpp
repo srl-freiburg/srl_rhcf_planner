@@ -136,7 +136,8 @@ double RHCF::discreteFrechet(float x1[], float y1[], float x2[], float y2[], int
 double* RHCF::measureDiversity(int* HCpathsCellLengths, int* HCpathsLengths, int** HCpaths){
 
 	double inf = std::numeric_limits<double>::infinity();
-
+	
+	// Matrix of frechet distances between each pair of paths in the HCpaths
 	double diversityMatrix[numHC_][numHC_];
 
 	for(int i = 0; i<numHC_; i++)
