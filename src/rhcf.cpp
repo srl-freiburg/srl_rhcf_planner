@@ -1719,7 +1719,7 @@ void RHCF::findHomotopyClasses(){
 
 	clock_t HCtimeStart = clock();
 
-
+// Run random walk iterations until K distinct paths are found
 while (numHC_ < K_ )
 	{
 		//numHC_++;
