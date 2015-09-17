@@ -91,7 +91,7 @@ Clone the package into you catkin workspace
 ### Developers
 Any contribution to the software is welcome. Contact the current developers for any info: 
 * Luigi Palmieri (https://github.com/palmieri, palmieri(at)informatik.uni-freiburg.de)
-* Andrey Rudenko (andrey.rudenko(at)saturn.uni-freiburg.de)
+* Andrey Rudenko (https://github.com/rudenkoandrey, andrey.rudenko(at)saturn.uni-freiburg.de)
 
 ### TODOs:
 * Rewrite the code to be conform to the ROS Cpp style guide, see http://wiki.ros.org/CppStyleGuide
