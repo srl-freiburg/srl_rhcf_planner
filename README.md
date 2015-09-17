@@ -4,7 +4,7 @@
 
 ![alt tag](http://www2.informatik.uni-freiburg.de/~palmieri/images/cover_girl.png)
 
-**Description of the figure**: The **red** Voronoi diagram, which implicitly encodes homotopy classes, describes the possible ways to go through a crowd in a room. Our approach rapidly selected two possible paths (in **yellow** and **green**).
+**Description of the figure**: The **red** socially-informed Voronoi diagram, which implicitly encodes homotopy classes, describes the possible ways to go through a crowd in a room. Our approach rapidly selected two possible paths (in **yellow** and **green**).
 
 ### Motivation 
 To deal with unexpected obstacles and quickly react to dynamic world's changes in social settings we utilize a fast random walk approach (RHCF) to generate a set of K distinct paths, belonging to different homotopy classes. The best geometric path among those found by RHCF is then used to generate a kinodynamic trajectory by using an optimal sampling based motion planner.
